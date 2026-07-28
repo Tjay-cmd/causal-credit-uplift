@@ -15,6 +15,7 @@
 
 html {
   color-scheme: dark;
+  overflow-x: clip;
 }
 
 body {
@@ -24,9 +25,58 @@ body {
     var(--base);
   color: var(--ink);
   min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
 }
 
 ::selection {
   background: rgba(245, 185, 66, 0.35);
   color: #08090b;
+}
+
+/* Horizontal nav / table strips on phones */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.table-scroll {
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+  cursor: grab;
+  /* Always show a usable scrollbar (Windows overlay scrollbars are easy to miss) */
+  scrollbar-gutter: stable;
+  scrollbar-width: auto;
+  scrollbar-color: #f5b942 #1a1d26;
+}
+
+.table-scroll.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.table-scroll::-webkit-scrollbar {
+  height: 12px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: #1a1d26;
+  border-radius: 0 0 8px 8px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: #f5b942;
+  border-radius: 6px;
+  border: 2px solid #1a1d26;
+  min-width: 48px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #ffd07a;
 }

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Syne, Source_Sans_3, IBM_Plex_Mono } from "next/font/google";
 import { SiteNav } from "@/components/SiteNav";
 import "./globals.css";
@@ -27,6 +27,12 @@ export const metadata: Metadata = {
     "Portfolio dashboard: Phase 1 Hillstrom uplift methodology + Phase 2 synthetic credit CATE recovery.",
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,10 +44,12 @@ export default function RootLayout({
         className={`${display.variable} ${body.variable} ${mono.variable} font-body antialiased`}
       >
         <SiteNav />
-        <main className="mx-auto max-w-6xl px-5 py-10 md:py-14">{children}</main>
-        <footer className="mx-auto max-w-6xl border-t border-edge px-5 py-8">
-          <p className="font-mono text-[11px] uppercase tracking-widest text-muted">
-            Presentation layer only — numbers from exported Phase 1 / Phase 2 artifacts.
+        <main className="mx-auto w-full min-w-0 max-w-6xl px-4 py-8 sm:px-5 md:py-14">
+          {children}
+        </main>
+        <footer className="mx-auto max-w-6xl border-t border-edge px-4 py-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-5 sm:py-8">
+          <p className="max-w-prose font-mono text-[11px] uppercase leading-relaxed tracking-widest text-muted">
+            Presentation only. Numbers come from exported Phase 1 / Phase 2 artifacts.
           </p>
         </footer>
       </body>

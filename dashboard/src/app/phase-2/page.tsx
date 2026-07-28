@@ -1,6 +1,7 @@
 import { CateRecoveryChart } from "@/components/charts/CateRecoveryChart";
 import { QiniChart } from "@/components/charts/QiniChart";
 import { QuadrantBadge } from "@/components/Quadrant";
+import { TableScroll } from "@/components/TableScroll";
 import { MetricsTable, PeheTable } from "@/components/Tables";
 import { Callout, EmptyState, Section, Stat } from "@/components/ui";
 import { loadPhase2 } from "@/lib/loadData";
@@ -11,7 +12,7 @@ export default async function Phase2Page() {
   const data = await loadPhase2();
 
   if (!data) {
-    return <EmptyState label="phase2.json missing — run export_dashboard_data.py" />;
+    return <EmptyState label="phase2.json missing. Run export_dashboard_data.py first." />;
   }
 
   const segments = data.generation.segments;
@@ -20,15 +21,15 @@ export default async function Phase2Page() {
   );
 
   return (
-    <div className="space-y-14">
-      <header className="max-w-3xl space-y-4">
+    <div className="space-y-10 md:space-y-14">
+      <header className="max-w-3xl space-y-3 md:space-y-4">
         <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber">
-          Phase 2 · Ground-truth validation
+          Phase 2 · Ground-truth check
         </p>
-        <h1 className="font-display text-4xl tracking-tight text-ink md:text-5xl">
+        <h1 className="font-display text-3xl tracking-tight text-ink sm:text-4xl md:text-5xl">
           {data.meta.title}
         </h1>
-        <p className="text-lg leading-relaxed text-muted">{data.meta.framing}</p>
+        <p className="text-base leading-relaxed text-muted sm:text-lg">{data.meta.framing}</p>
       </header>
 
       <div className="grid gap-3 sm:grid-cols-3">
@@ -45,22 +46,22 @@ export default async function Phase2Page() {
         />
       </div>
 
-      <Section eyebrow="Answer key" title="Latent segments (DGP)">
+      <Section eyebrow="Built-in answer key" title="Latent segments (DGP)">
         <div className="grid gap-3 md:grid-cols-2">
           {segments.map((seg) => (
             <div
               key={seg.segment}
-              className={`rounded-lg border bg-surface p-4 ${
+              className={`min-w-0 rounded-lg border bg-surface p-4 ${
                 seg.segment === "Sleeping Dogs" || seg.segment === "Persuadables"
                   ? "border-amber/35"
                   : "border-edge"
               }`}
             >
-              <div className="mb-3 flex items-center gap-3">
+              <div className="mb-3 flex items-start gap-3">
                 <QuadrantBadge active={seg.segment as SegmentKey} size={30} />
-                <div>
+                <div className="min-w-0">
                   <p className="font-display text-lg text-ink">{seg.segment}</p>
-                  <p className="font-mono text-xs text-amber">
+                  <p className="break-words font-mono text-xs leading-relaxed text-amber">
                     true CATE {fmtSigned(seg.mean_true_cate)} · share{" "}
                     {fmtPct(seg.share)} · obs gap {fmtSigned(seg.obs_gap)}
                   </p>
@@ -73,14 +74,14 @@ export default async function Phase2Page() {
       </Section>
 
       <Section
-        eyebrow="Centerpiece"
+        eyebrow="Main result"
         title="True vs recovered mean CATE"
         className="space-y-5"
       >
         <p className="max-w-2xl text-sm text-muted">
-          Grouped bars: ground-truth mean CATE vs T-learner vs CausalForestDML on
-          the held-out test set. This is the Phase 2 proof that models recover the
-          DGP — not just overall risk.
+          Grouped bars compare true mean CATE to T-learner and CausalForestDML on
+          the test set. This is the check that the models recover the simulated
+          segments, not just overall good_standing risk.
         </p>
         <CateRecoveryChart rows={data.cate_recovery.by_segment} />
         <PeheTable rows={data.cate_recovery.overall} />
@@ -91,19 +92,19 @@ export default async function Phase2Page() {
         <MetricsTable models={data.models} />
       </Section>
 
-      <Section eyebrow="Operational targeting" title="Top-decile true-segment mix">
+      <Section eyebrow="Who would get treated" title="Top-decile true-segment mix">
         <p className="text-sm text-muted">
-          If you treat the top 10% by predicted CATE, who do you actually reach?
+          If you treat the top 10% by predicted CATE, which true segments show up?
         </p>
-        <div className="overflow-x-auto rounded-lg border border-edge">
-          <table className="w-full min-w-[640px] text-left text-sm">
+        <TableScroll>
+          <table className="w-full min-w-[560px] border-collapse text-left text-sm">
             <thead className="bg-surface-2 font-mono text-[10px] uppercase tracking-widest text-muted">
               <tr>
-                <th className="px-4 py-3">Model</th>
-                <th className="px-4 py-3">True segment</th>
-                <th className="px-4 py-3">% of top</th>
-                <th className="px-4 py-3">Pop share</th>
-                <th className="px-4 py-3">Enrichment</th>
+                <th className="whitespace-nowrap px-3 py-3 sm:px-4">Model</th>
+                <th className="whitespace-nowrap px-3 py-3 sm:px-4">True segment</th>
+                <th className="whitespace-nowrap px-3 py-3 sm:px-4">% of top</th>
+                <th className="whitespace-nowrap px-3 py-3 sm:px-4">Pop share</th>
+                <th className="whitespace-nowrap px-3 py-3 sm:px-4">Enrichment</th>
               </tr>
             </thead>
             <tbody>
@@ -112,23 +113,23 @@ export default async function Phase2Page() {
                   key={`${r.model}-${r.true_segment}`}
                   className="border-t border-edge bg-surface"
                 >
-                  <td className="px-4 py-2 text-ink">{r.model}</td>
-                  <td className="px-4 py-2">
+                  <td className="whitespace-nowrap px-3 py-2 text-ink sm:px-4">{r.model}</td>
+                  <td className="px-3 py-2 sm:px-4">
                     <span className="inline-flex items-center gap-2">
                       <QuadrantBadge active={r.true_segment as SegmentKey} size={18} />
                       {r.true_segment}
                     </span>
                   </td>
-                  <td className="px-4 py-2 font-mono text-amber">
+                  <td className="px-3 py-2 font-mono text-amber sm:px-4">
                     {fmtPct(r.pct_of_decile)}
                   </td>
-                  <td className="px-4 py-2 font-mono">{fmtPct(r.pop_share)}</td>
-                  <td className="px-4 py-2 font-mono">{fmtMult(r.enrichment)}</td>
+                  <td className="px-3 py-2 font-mono sm:px-4">{fmtPct(r.pop_share)}</td>
+                  <td className="px-3 py-2 font-mono sm:px-4">{fmtMult(r.enrichment)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
 
         <div className="grid gap-3 md:grid-cols-2">
           {data.segment_recovery.ops_summaries.map((s) => (
@@ -147,17 +148,17 @@ export default async function Phase2Page() {
         </div>
       </Section>
 
-      <Section eyebrow="Closing" title="A metric tradeoff, not a single winner">
+      <Section eyebrow="Takeaway" title="Different metrics, different winner">
         <Callout tone="amber" title="Qini vs PEHE vs contamination">
           <p>
             <span className="font-mono text-amber">{data.metric_tradeoff.qini_winner}</span>{" "}
-            wins Qini ranking;{" "}
+            wins Qini ranking.{" "}
             <span className="font-mono text-amber">{data.metric_tradeoff.pehe_winner}</span>{" "}
-            wins PEHE;{" "}
+            wins PEHE.{" "}
             <span className="font-mono text-amber">
               {data.metric_tradeoff.contamination_safer}
             </span>{" "}
-            is safer on Sleeping Dogs contamination in the top decile.
+            puts fewer Sleeping Dogs in the top decile.
           </p>
           <p>{data.metric_tradeoff.note}</p>
         </Callout>

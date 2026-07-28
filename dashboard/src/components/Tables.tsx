@@ -1,6 +1,7 @@
 import type { ModelMetrics } from "@/lib/types";
 import { fmtNum, fmtPct } from "@/lib/format";
 import { EmptyState } from "./ui";
+import { TableScroll } from "./TableScroll";
 
 export function MetricsTable({ models }: { models: ModelMetrics[] | null | undefined }) {
   if (!models?.length) {
@@ -8,32 +9,34 @@ export function MetricsTable({ models }: { models: ModelMetrics[] | null | undef
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-edge">
-      <table className="w-full min-w-[520px] text-left text-sm">
+    <TableScroll>
+      <table className="w-full min-w-[480px] border-collapse text-left text-sm">
         <thead className="bg-surface-2 font-mono text-[10px] uppercase tracking-widest text-muted">
           <tr>
-            <th className="px-4 py-3">Model</th>
-            <th className="px-4 py-3">Qini</th>
-            <th className="px-4 py-3">Uplift@10%</th>
-            <th className="px-4 py-3">Uplift@30%</th>
-            <th className="px-4 py-3">Uplift@50%</th>
+            <th className="whitespace-nowrap px-3 py-3 sm:px-4">Model</th>
+            <th className="whitespace-nowrap px-3 py-3 sm:px-4">Qini</th>
+            <th className="whitespace-nowrap px-3 py-3 sm:px-4">Uplift@10%</th>
+            <th className="whitespace-nowrap px-3 py-3 sm:px-4">Uplift@30%</th>
+            <th className="whitespace-nowrap px-3 py-3 sm:px-4">Uplift@50%</th>
           </tr>
         </thead>
         <tbody>
           {models.map((m) => (
             <tr key={m.model} className="border-t border-edge bg-surface">
-              <td className="px-4 py-3 font-medium text-ink">{m.model}</td>
-              <td className="px-4 py-3 font-mono text-amber">
+              <td className="whitespace-nowrap px-3 py-3 font-medium text-ink sm:px-4">
+                {m.model}
+              </td>
+              <td className="px-3 py-3 font-mono text-amber sm:px-4">
                 {fmtNum(m.qini_coefficient, 2)}
               </td>
-              <td className="px-4 py-3 font-mono">{fmtNum(m.uplift_at_10pct)}</td>
-              <td className="px-4 py-3 font-mono">{fmtNum(m.uplift_at_30pct)}</td>
-              <td className="px-4 py-3 font-mono">{fmtNum(m.uplift_at_50pct)}</td>
+              <td className="px-3 py-3 font-mono sm:px-4">{fmtNum(m.uplift_at_10pct)}</td>
+              <td className="px-3 py-3 font-mono sm:px-4">{fmtNum(m.uplift_at_30pct)}</td>
+              <td className="px-3 py-3 font-mono sm:px-4">{fmtNum(m.uplift_at_50pct)}</td>
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
+    </TableScroll>
   );
 }
 
@@ -53,57 +56,52 @@ export function PeheTable({
     return <EmptyState label="PEHE table unavailable" />;
   }
   return (
-    <div className="overflow-x-auto rounded-lg border border-edge">
-      <table className="w-full min-w-[420px] text-left text-sm">
+    <TableScroll>
+      <table className="w-full min-w-[360px] border-collapse text-left text-sm">
         <thead className="bg-surface-2 font-mono text-[10px] uppercase tracking-widest text-muted">
           <tr>
-            <th className="px-4 py-3">Model</th>
-            <th className="px-4 py-3">PEHE</th>
-            <th className="px-4 py-3">corr(pred, true)</th>
+            <th className="whitespace-nowrap px-3 py-3 sm:px-4">Model</th>
+            <th className="whitespace-nowrap px-3 py-3 sm:px-4">PEHE</th>
+            <th className="whitespace-nowrap px-3 py-3 sm:px-4">corr(pred, true)</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((r) => (
             <tr key={r.model} className="border-t border-edge bg-surface">
-              <td className="px-4 py-3 text-ink">{r.model}</td>
-              <td className="px-4 py-3 font-mono text-amber">{fmtNum(r.pehe, 4)}</td>
-              <td className="px-4 py-3 font-mono">{fmtNum(r.corr_pred_true_cate, 3)}</td>
+              <td className="whitespace-nowrap px-3 py-3 text-ink sm:px-4">{r.model}</td>
+              <td className="px-3 py-3 font-mono text-amber sm:px-4">
+                {fmtNum(r.pehe, 4)}
+              </td>
+              <td className="px-3 py-3 font-mono sm:px-4">
+                {fmtNum(r.corr_pred_true_cate, 3)}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
+    </TableScroll>
   );
 }
+
+type Profile = {
+  model: string;
+  recency_mean: number;
+  history_mean: number;
+  mens_rate: number;
+  womens_rate: number;
+  newbie_rate: number;
+  history_segment_mode: string;
+  zip_code_mode: string;
+  channel_mode: string;
+  obs_uplift: number;
+};
 
 export function ProfileCompare({
   top,
   bottom,
 }: {
-  top: {
-    model: string;
-    recency_mean: number;
-    history_mean: number;
-    mens_rate: number;
-    womens_rate: number;
-    newbie_rate: number;
-    history_segment_mode: string;
-    zip_code_mode: string;
-    channel_mode: string;
-    obs_uplift: number;
-  } | null;
-  bottom: {
-    model: string;
-    recency_mean: number;
-    history_mean: number;
-    mens_rate: number;
-    womens_rate: number;
-    newbie_rate: number;
-    history_segment_mode: string;
-    zip_code_mode: string;
-    channel_mode: string;
-    obs_uplift: number;
-  } | null;
+  top: Profile | null;
+  bottom: Profile | null;
 }) {
   if (!top || !bottom) {
     return <EmptyState label="Segment profiles unavailable" />;
@@ -122,28 +120,68 @@ export function ProfileCompare({
   ];
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-edge">
-      <table className="w-full min-w-[560px] text-left text-sm">
-        <thead className="bg-surface-2 font-mono text-[10px] uppercase tracking-widest text-muted">
-          <tr>
-            <th className="px-4 py-3">Feature</th>
-            <th className="px-4 py-3 text-amber">Top decile (Persuadables)</th>
-            <th className="px-4 py-3">Bottom decile (low uplift)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => (
-            <tr key={r.label} className="border-t border-edge bg-surface">
-              <td className="px-4 py-2.5 text-muted">{r.label}</td>
-              <td className="px-4 py-2.5 font-mono text-ink">{r.a}</td>
-              <td className="px-4 py-2.5 font-mono text-ink">{r.b}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <p className="border-t border-edge px-4 py-2 font-mono text-[11px] text-muted">
-        Profiles shown for {top.model} (primary Phase 1 segment narrative).
-      </p>
+    <div className="min-w-0 space-y-3">
+      {/* Mobile: stacked cards so nothing is clipped */}
+      <div className="space-y-2 md:hidden">
+        {rows.map((r) => (
+          <div
+            key={r.label}
+            className="rounded-lg border border-edge bg-surface px-3 py-3"
+          >
+            <p className="text-xs text-muted">{r.label}</p>
+            <div className="mt-2 grid grid-cols-2 gap-3">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-widest text-amber">
+                  Top decile
+                </p>
+                <p className="mt-0.5 break-words font-mono text-sm text-ink">{r.a}</p>
+              </div>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+                  Bottom decile
+                </p>
+                <p className="mt-0.5 break-words font-mono text-sm text-ink">{r.b}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+        <p className="font-mono text-[11px] text-muted">
+          Profiles shown for {top.model} (Phase 1 top vs bottom decile).
+        </p>
+      </div>
+
+      {/* Desktop / wide: scrollable table */}
+      <div className="hidden md:block">
+        <TableScroll hint="Drag sideways to see more columns">
+          <table className="w-full min-w-[520px] border-collapse text-left text-sm">
+            <thead className="bg-surface-2 font-mono text-[10px] uppercase tracking-widest text-muted">
+              <tr>
+                <th className="px-3 py-3 sm:px-4">Feature</th>
+                <th className="whitespace-nowrap px-3 py-3 text-amber sm:px-4">
+                  Top decile
+                </th>
+                <th className="whitespace-nowrap px-3 py-3 sm:px-4">Bottom decile</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.label} className="border-t border-edge bg-surface">
+                  <td className="px-3 py-2.5 text-muted sm:px-4">{r.label}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-ink sm:px-4">
+                    {r.a}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-mono text-ink sm:px-4">
+                    {r.b}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="border-t border-edge px-3 py-2 font-mono text-[11px] text-muted sm:px-4">
+            Profiles shown for {top.model} (Phase 1 top vs bottom decile).
+          </p>
+        </TableScroll>
+      </div>
     </div>
   );
 }

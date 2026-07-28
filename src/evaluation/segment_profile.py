@@ -240,17 +240,18 @@ def top_decile_overlap(
 
     if overlap_of_top < 0.4:
         agreement = (
-            "LOW overlap - models disagree substantially on who the top 10% are; "
-            "treat segment membership as unstable across estimators."
+            "Low overlap. The models disagree a lot on who sits in the top 10%. "
+            "I would not treat segment membership as stable across estimators."
         )
     elif overlap_of_top < 0.7:
         agreement = (
-            "MODERATE overlap - some shared persuadables, but a large unique slice "
-            "per model; do not treat either top-decile list as definitive alone."
+            "Moderate overlap. Some shared persuadables, but each model still has "
+            "a big unique slice. I would not treat either top-decile list as the "
+            "final answer on its own."
         )
     else:
         agreement = (
-            "HIGH overlap - models largely agree on top-decile membership."
+            "High overlap. The models mostly agree on who is in the top decile."
         )
 
     return {

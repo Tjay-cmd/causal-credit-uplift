@@ -7,44 +7,34 @@ const SEGMENTS: SegmentKey[] = [
   "Sleeping Dogs",
 ];
 
-/** Mini 2×2 motif — signature device when a segment is referenced. */
+/** Small 2x2 badge used wherever a segment is mentioned. */
 export function QuadrantBadge({
   active,
   size = 28,
+  className = "",
 }: {
   active?: SegmentKey | null;
   size?: number;
+  className?: string;
 }) {
-  const positions: Record<SegmentKey, string> = {
-    Persuadables: "top-0 left-0",
-    "Sure Things": "top-0 right-0",
-    "Lost Causes": "bottom-0 left-0",
-    "Sleeping Dogs": "bottom-0 right-0",
-  };
-
   return (
     <div
-      className="relative grid grid-cols-2 grid-rows-2 gap-px rounded-sm bg-edge p-px"
-      style={{ width: size, height: size }}
+      className={`grid shrink-0 grid-cols-2 grid-rows-2 gap-px overflow-hidden rounded-sm bg-edge p-px ${className}`}
+      style={{ width: size, height: size, minWidth: size, minHeight: size }}
       aria-hidden
+      title={active ?? undefined}
     >
-      {SEGMENTS.map((seg) => {
-        const isActive = active === seg;
-        return (
-          <div
-            key={seg}
-            className={`relative ${positions[seg]} ${
-              isActive ? "bg-amber" : "bg-surface-2"
-            }`}
-            title={seg}
-          />
-        );
-      })}
+      {SEGMENTS.map((seg) => (
+        <div
+          key={seg}
+          className={active === seg ? "bg-amber" : "bg-surface-2"}
+        />
+      ))}
     </div>
   );
 }
 
-/** Full labeled 2×2 diagram for landing / methodology. */
+/** Full labeled 2x2 diagram for landing / methodology. */
 export function QuadrantDiagram() {
   const cells: Array<{
     key: SegmentKey;
@@ -54,22 +44,22 @@ export function QuadrantDiagram() {
     {
       key: "Persuadables",
       cate: "CATE > 0",
-      blurb: "Respond because of treatment — the targeting prize.",
+      blurb: "Only get better because you treated them. These are the people you want.",
     },
     {
       key: "Sure Things",
       cate: "CATE ≈ 0",
-      blurb: "Succeed either way. Risk models love them; uplift does not.",
+      blurb: "Do well either way. Risk models love them. Uplift mostly ignores them.",
     },
     {
       key: "Lost Causes",
       cate: "CATE ≈ 0",
-      blurb: "Fail either way. Ranking by outcome alone still misses this.",
+      blurb: "Do poorly either way. Low outcome score, but treatment still barely helps.",
     },
     {
       key: "Sleeping Dogs",
       cate: "CATE < 0",
-      blurb: "Treatment backfires. The costly mistake in a treated list.",
+      blurb: "Treatment makes things worse. Bad people to put on a treated list.",
     },
   ];
 
@@ -86,7 +76,7 @@ export function QuadrantDiagram() {
         >
           <div className="mb-3 flex items-center gap-3">
             <QuadrantBadge active={cell.key} size={32} />
-            <div>
+            <div className="min-w-0">
               <p className="font-display text-lg text-ink">{cell.key}</p>
               <p className="font-mono text-xs text-amber">{cell.cate}</p>
             </div>

@@ -144,7 +144,7 @@ def confusion_for_model(
             else float("nan")
         ),
         "deploy_line": (
-            f"If you deployed {model_name} and targeted its top decile, you would reach "
+            f"If you used {model_name} and treated its top decile, you would hit "
             f"{100 * top_pers:.1f}% true Persuadables and "
             f"{100 * top_dogs:.1f}% true Sleeping Dogs."
         ),

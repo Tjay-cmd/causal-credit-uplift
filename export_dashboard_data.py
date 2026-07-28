@@ -164,9 +164,10 @@ def negative_cate_concentration() -> dict[str, Any]:
         "history_mean_test": float(merged["history"].mean()),
         "category_gaps": gaps,
         "framing": (
-            "Plausible but low-sample finding (1.4% of test set), not a confirmed "
-            "population effect. Concentration among higher-history / Rural / "
-            "Multichannel customers informed Phase 2 Sleeping Dogs design."
+            "Small group (about 1.4% of the test set), so I would not call this a "
+            "confirmed effect. Still, the people with negative CATE clustered in "
+            "higher-history / Rural / Multichannel, and that idea shaped Phase 2 "
+            "Sleeping Dogs."
         ),
     }
 
@@ -187,9 +188,9 @@ def export_phase1() -> dict[str, Any]:
             "phase": 1,
             "title": "Hillstrom MineThatData",
             "framing": (
-                "Real randomized email marketing experiment used to prove uplift "
-                "methodology before touching synthetic credit data. Mens E-Mail vs "
-                "No E-Mail; outcome = visit."
+                "I used a real randomized email experiment first to check that the "
+                "uplift methods work before building synthetic credit data. Mens "
+                "E-Mail vs No E-Mail, outcome = visit."
             ),
             "n_test": int(len(t_preds)),
         },
@@ -203,7 +204,11 @@ def export_phase1() -> dict[str, Any]:
             "jaccard": float(overlap_row["top_decile_jaccard"]),
             "n_intersection": int(overlap_row["top_decile_n_intersection"]),
             "n_top": int(overlap_row["n_treated"]),
-            "agreement_flag": str(overlap_row["agreement_flag"]),
+            "agreement_flag": (
+                "Moderate overlap. Some shared persuadables, but each model still "
+                "has a big unique slice. I would not treat either top-decile list "
+                "as the final answer on its own."
+            ),
         },
         "negative_cate": negative_cate_concentration(),
     }
@@ -218,20 +223,20 @@ def export_phase2_generation() -> dict[str, Any]:
     order = ["Persuadables", "Sure Things", "Lost Causes", "Sleeping Dogs"]
     traits = {
         "Persuadables": (
-            "Moderate utilization, decent payment consistency; App / Urban skew. "
-            "True CATE +0.15 to +0.20."
+            "Moderate utilization, decent payment history, more App / Urban. "
+            "True CATE about +0.15 to +0.20."
         ),
         "Sure Things": (
-            "High payment consistency, low utilization. True CATE ~0 "
-            "(noise only)."
+            "High payment consistency, low utilization. True CATE near 0 "
+            "(basically noise)."
         ),
         "Lost Causes": (
-            "Low payment consistency, high utilization. True CATE ~0 "
-            "(noise only)."
+            "Low payment consistency, high utilization. True CATE near 0 "
+            "(basically noise)."
         ),
         "Sleeping Dogs": (
-            "High utilization, many active lines; Rural / CallCenter skew "
-            "(contact saturation). True CATE -0.10 to -0.15."
+            "High utilization, lots of active lines, more Rural / CallCenter "
+            "(too much contact). True CATE about -0.10 to -0.15."
         ),
     }
     for seg in order:
@@ -345,9 +350,9 @@ def export_phase2() -> dict[str, Any]:
             "phase": 2,
             "title": "Synthetic credit-limit RCT",
             "framing": (
-                "Synthetic randomized credit-limit experiment with known latent "
-                "segments and true CATE, designed so Sleeping Dogs mirror Phase 1's "
-                "contact-saturation logic. Outcome = good_standing at 3 months."
+                "Synthetic credit-limit RCT with known segments and true CATE. "
+                "I built Sleeping Dogs around the contact-saturation idea from "
+                "Phase 1. Outcome = good_standing at 3 months."
             ),
             "n_test": int(len(t_preds)),
         },
@@ -359,7 +364,18 @@ def export_phase2() -> dict[str, Any]:
         },
         "segment_recovery": {
             "composition": composition_rows,
-            "ops_summaries": ops_rows,
+            "ops_summaries": [
+                {
+                    **row,
+                    "deploy_line": (
+                        f"If you used {row['model']} and treated its top decile, "
+                        f"you would hit {row['top_pct_persuadables'] * 100:.1f}% "
+                        f"true Persuadables and "
+                        f"{row['top_pct_sleeping_dogs'] * 100:.1f}% true Sleeping Dogs."
+                    ),
+                }
+                for row in ops_rows
+            ],
             "safer_model": str(safer["true_segment"]),
             "safer_sleeping_dogs_rate": float(safer["top_pct_sleeping_dogs"]),
             "safer_line": str(safer["deploy_line"]),
@@ -369,11 +385,11 @@ def export_phase2() -> dict[str, Any]:
             "pehe_winner": pehe_winner,
             "contamination_safer": str(safer["true_segment"]),
             "note": (
-                "CausalForestDML wins on PEHE and Sleeping Dogs contamination safety; "
-                "T-learner wins on Qini ranking. Prefer CF when individual effect-size "
-                "estimation or harm-avoidance in the treated list matters; prefer "
-                "T-learner when overall ranking quality for a mailing/approval curve "
-                "is the primary KPI."
+                "So CausalForestDML is better on PEHE and keeps Sleeping Dogs out "
+                "of the top decile. T-learner is better on Qini. If I cared more "
+                "about not hurting people or getting effect sizes right, I would "
+                "lean CF. If the goal is just a strong overall ranking curve, "
+                "T-learner looks fine."
             ),
         },
     }

@@ -2,7 +2,7 @@
   "meta": {
     "phase": 1,
     "title": "Hillstrom MineThatData",
-    "framing": "Real randomized email marketing experiment used to prove uplift methodology before touching synthetic credit data. Mens E-Mail vs No E-Mail; outcome = visit.",
+    "framing": "I used a real randomized email experiment first to check that the uplift methods work before building synthetic credit data. Mens E-Mail vs No E-Mail, outcome = visit.",
     "n_test": 8523
   },
   "models": [
@@ -2128,7 +2128,7 @@
     "jaccard": 0.4094292803970223,
     "n_intersection": 495,
     "n_top": 852,
-    "agreement_flag": "MODERATE overlap - some shared persuadables, but a large unique slice per model; do not treat either top-decile list as definitive alone."
+    "agreement_flag": "Moderate overlap. Some shared persuadables, but each model still has a big unique slice. I would not treat either top-decile list as the final answer on its own."
   },
   "negative_cate": {
     "n_negative": 123,
@@ -2230,6 +2230,6 @@
         "gap_pp": -7.6713512647270115
       }
     ],
-    "framing": "Plausible but low-sample finding (1.4% of test set), not a confirmed population effect. Concentration among higher-history / Rural / Multichannel customers informed Phase 2 Sleeping Dogs design."
+    "framing": "Small group (about 1.4% of the test set), so I would not call this a confirmed effect. Still, the people with negative CATE clustered in higher-history / Rural / Multichannel, and that idea shaped Phase 2 Sleeping Dogs."
   }
 }

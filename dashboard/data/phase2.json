@@ -2,7 +2,7 @@
   "meta": {
     "phase": 2,
     "title": "Synthetic credit-limit RCT",
-    "framing": "Synthetic randomized credit-limit experiment with known latent segments and true CATE, designed so Sleeping Dogs mirror Phase 1's contact-saturation logic. Outcome = good_standing at 3 months.",
+    "framing": "Synthetic credit-limit RCT with known segments and true CATE. I built Sleeping Dogs around the contact-saturation idea from Phase 1. Outcome = good_standing at 3 months.",
     "n_test": 8000
   },
   "generation": {
@@ -16,7 +16,7 @@
         "mean_true_cate": 0.1749708790381907,
         "obs_gap": 0.1905715728543031,
         "mean_baseline_prob": 0.38196938300484523,
-        "traits": "Moderate utilization, decent payment consistency; App / Urban skew. True CATE +0.15 to +0.20."
+        "traits": "Moderate utilization, decent payment history, more App / Urban. True CATE about +0.15 to +0.20."
       },
       {
         "segment": "Sure Things",
@@ -25,7 +25,7 @@
         "mean_true_cate": -7.06916380012395e-05,
         "obs_gap": 0.0012373908159455382,
         "mean_baseline_prob": 0.592372340805522,
-        "traits": "High payment consistency, low utilization. True CATE ~0 (noise only)."
+        "traits": "High payment consistency, low utilization. True CATE near 0 (basically noise)."
       },
       {
         "segment": "Lost Causes",
@@ -34,7 +34,7 @@
         "mean_true_cate": -0.0001892247986583068,
         "obs_gap": 0.007232877211557631,
         "mean_baseline_prob": 0.25007886100687354,
-        "traits": "Low payment consistency, high utilization. True CATE ~0 (noise only)."
+        "traits": "Low payment consistency, high utilization. True CATE near 0 (basically noise)."
       },
       {
         "segment": "Sleeping Dogs",
@@ -43,7 +43,7 @@
         "mean_true_cate": -0.12534409231373078,
         "obs_gap": -0.12144958223695551,
         "mean_baseline_prob": 0.3255632517988348,
-        "traits": "High utilization, many active lines; Rural / CallCenter skew (contact saturation). True CATE -0.10 to -0.15."
+        "traits": "High utilization, lots of active lines, more Rural / CallCenter (too much contact). True CATE about -0.10 to -0.15."
       }
     ]
   },
@@ -2285,13 +2285,13 @@
         "model": "T-learner",
         "top_pct_persuadables": 0.955,
         "top_pct_sleeping_dogs": 0.00125,
-        "deploy_line": "If you deployed T-learner and targeted its top decile, you would reach 95.5% true Persuadables and 0.1% true Sleeping Dogs."
+        "deploy_line": "If you used T-learner and treated its top decile, you would hit 95.5% true Persuadables and 0.1% true Sleeping Dogs."
       },
       {
         "model": "CausalForestDML",
         "top_pct_persuadables": 1.0,
         "top_pct_sleeping_dogs": 0.0,
-        "deploy_line": "If you deployed CausalForestDML and targeted its top decile, you would reach 100.0% true Persuadables and 0.0% true Sleeping Dogs."
+        "deploy_line": "If you used CausalForestDML and treated its top decile, you would hit 100.0% true Persuadables and 0.0% true Sleeping Dogs."
       }
     ],
     "safer_model": "CausalForestDML",
@@ -2302,6 +2302,6 @@
     "qini_winner": "T-learner",
     "pehe_winner": "CausalForestDML",
     "contamination_safer": "CausalForestDML",
-    "note": "CausalForestDML wins on PEHE and Sleeping Dogs contamination safety; T-learner wins on Qini ranking. Prefer CF when individual effect-size estimation or harm-avoidance in the treated list matters; prefer T-learner when overall ranking quality for a mailing/approval curve is the primary KPI."
+    "note": "So CausalForestDML is better on PEHE and keeps Sleeping Dogs out of the top decile. T-learner is better on Qini. If I cared more about not hurting people or getting effect sizes right, I would lean CF. If the goal is just a strong overall ranking curve, T-learner looks fine."
   }
 }
