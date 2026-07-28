@@ -2,8 +2,7 @@
 
 Portfolio project on **uplift / causal inference** for credit decisions — not a risk-score classifier.
 
-**Live dashboard:** [DASHBOARD_URL_HERE]  
-*(Deploy `dashboard/` to Vercel, then replace this placeholder.)*
+**Live dashboard:** [https://causal-credit-uplift-ten.vercel.app](https://causal-credit-uplift-ten.vercel.app)
 
 | Phase | What | Why |
 |---|---|---|
