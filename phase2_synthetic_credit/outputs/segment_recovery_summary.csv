@@ -1,0 +1,20 @@
+model,predicted_decile,true_segment,n,pct_of_decile,pop_share,enrichment,decile_n,top_pct_persuadables,top_pct_sleeping_dogs,deploy_line
+T-learner,top,Persuadables,764.0,0.955,0.19675,4.853875476493011,800.0,,,
+T-learner,top,Sure Things,30.0,0.0375,0.298875,0.12547051442910914,800.0,,,
+T-learner,top,Lost Causes,5.0,0.00625,0.253375,0.0246669955599408,800.0,,,
+T-learner,top,Sleeping Dogs,1.0,0.00125,0.251,0.0049800796812749,800.0,,,
+T-learner,bottom,Persuadables,4.0,0.005,0.19675,0.025412960609911054,800.0,,,
+T-learner,bottom,Sure Things,21.0,0.02625,0.298875,0.08782936010037641,800.0,,,
+T-learner,bottom,Lost Causes,17.0,0.02125,0.253375,0.08386778490379872,800.0,,,
+T-learner,bottom,Sleeping Dogs,758.0,0.9475,0.251,3.7749003984063747,800.0,,,
+CausalForestDML,top,Persuadables,800.0,1.0,0.19675,5.082592121982211,800.0,,,
+CausalForestDML,top,Sure Things,0.0,0.0,0.298875,0.0,800.0,,,
+CausalForestDML,top,Lost Causes,0.0,0.0,0.253375,0.0,800.0,,,
+CausalForestDML,top,Sleeping Dogs,0.0,0.0,0.251,0.0,800.0,,,
+CausalForestDML,bottom,Persuadables,0.0,0.0,0.19675,0.0,800.0,,,
+CausalForestDML,bottom,Sure Things,0.0,0.0,0.298875,0.0,800.0,,,
+CausalForestDML,bottom,Lost Causes,0.0,0.0,0.253375,0.0,800.0,,,
+CausalForestDML,bottom,Sleeping Dogs,800.0,1.0,0.251,3.9840637450199203,800.0,,,
+T-learner,TOP_DECILE_OPS_SUMMARY,META,800.0,0.955,0.19675,4.853875476493011,800.0,0.955,0.00125,"If you deployed T-learner and targeted its top decile, you would reach 95.5% true Persuadables and 0.1% true Sleeping Dogs."
+CausalForestDML,TOP_DECILE_OPS_SUMMARY,META,800.0,1.0,0.19675,5.082592121982211,800.0,1.0,0.0,"If you deployed CausalForestDML and targeted its top decile, you would reach 100.0% true Persuadables and 0.0% true Sleeping Dogs."
+COMPARISON,SAFER_ON_SLEEPING_DOGS_CONTAMINATION,CausalForestDML,,0.0,,,,,0.0,Lower Sleeping Dogs contamination in top decile: CausalForestDML (0.00%).
