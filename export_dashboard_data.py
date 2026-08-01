@@ -70,6 +70,11 @@ def model_qini_bundle(preds: pd.DataFrame, model_name: str) -> dict[str, Any]:
     }
 
 
+def _display_label(value: object) -> str:
+    """Hillstrom MineThatData uses the misspelling 'Surburban'; show Suburban."""
+    return str(value).replace("Surburban", "Suburban")
+
+
 def _profile_row(row: pd.Series) -> dict[str, Any]:
     return {
         "model": str(row["model"]),
@@ -90,7 +95,7 @@ def _profile_row(row: pd.Series) -> dict[str, Any]:
         "newbie_rate": float(row["newbie_rate"]),
         "history_segment_mode": str(row["history_segment_mode"]),
         "history_segment_mode_share": float(row["history_segment_mode_share"]),
-        "zip_code_mode": str(row["zip_code_mode"]),
+        "zip_code_mode": _display_label(row["zip_code_mode"]),
         "zip_code_mode_share": float(row["zip_code_mode_share"]),
         "channel_mode": str(row["channel_mode"]),
         "channel_mode_share": float(row["channel_mode_share"]),
@@ -105,7 +110,7 @@ def reconstruct_categoricals(df: pd.DataFrame) -> pd.DataFrame:
         if not cols:
             raise ValueError(f"Missing one-hot block for {prefix}")
         block = out[cols].to_numpy()
-        labels = [c[len(prefix) :] for c in cols]
+        labels = [_display_label(c[len(prefix) :]) for c in cols]
         idx = block.argmax(axis=1)
         out[prefix.rstrip("_")] = pd.Series(idx).map(lambda i: labels[i]).values
     return out
@@ -148,7 +153,7 @@ def negative_cate_concentration() -> dict[str, Any]:
             gaps.append(
                 {
                     "feature": cat,
-                    "level": str(level),
+                    "level": _display_label(level),
                     "neg_share": float(r["neg_share"]),
                     "test_share": float(r["test_share"]),
                     "gap_pp": float(r["gap_pp"]),

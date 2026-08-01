@@ -141,7 +141,7 @@ export default async function Phase2Page() {
               <p>{s.deploy_line}</p>
               <p className="font-mono text-xs text-muted">
                 Persuadables {fmtPct(s.top_pct_persuadables)} · Sleeping Dogs{" "}
-                {fmtPct(s.top_pct_sleeping_dogs, 2)}
+                {fmtPct(s.top_pct_sleeping_dogs)}
               </p>
             </Callout>
           ))}

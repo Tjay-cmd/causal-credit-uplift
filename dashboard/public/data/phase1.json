@@ -2069,7 +2069,7 @@
       "newbie_rate": 0.4565727699530516,
       "history_segment_mode": "1) $0 - $100",
       "history_segment_mode_share": 0.3380281690140845,
-      "zip_code_mode": "Surburban",
+      "zip_code_mode": "Suburban",
       "zip_code_mode_share": 0.4037558685446009,
       "channel_mode": "Web",
       "channel_mode_share": 0.397887323943662
@@ -2117,7 +2117,7 @@
       "newbie_rate": 0.5446009389671361,
       "history_segment_mode": "1) $0 - $100",
       "history_segment_mode_share": 0.5868544600938967,
-      "zip_code_mode": "Surburban",
+      "zip_code_mode": "Suburban",
       "zip_code_mode_share": 0.4671361502347418,
       "channel_mode": "Web",
       "channel_mode_share": 0.6467136150234741
@@ -2203,7 +2203,7 @@
       },
       {
         "feature": "zip_code",
-        "level": "Surburban",
+        "level": "Suburban",
         "neg_share": 0.44715447154471544,
         "test_share": 0.44151120497477414,
         "gap_pp": 0.5643266569941296
